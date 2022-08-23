@@ -5,6 +5,7 @@ from handlers import inline
 from handlers import data_store
 from handlers import lang
 from handlers import weather
+from handlers import wolfram_handlers
 from telegram.ext import CommandHandler, MessageHandler, filters, InlineQueryHandler, ConversationHandler
 import handlers.generic_handlers as hnd
 
@@ -29,6 +30,8 @@ store_handler = CommandHandler('mystore', data_store.show_user_data)
 put_handler = CommandHandler('put', data_store.store_value)
 get_handler = CommandHandler('get', data_store.show_value)
 del_handler = CommandHandler('del', data_store.delete_value)
+location_handler = CommandHandler("loc", data_store.location)
+tzone_handler = CommandHandler("tzone", data_store.timezone)
 
 start_handler = ConversationHandler(
         entry_points=[CommandHandler("start", hnd.start)],
@@ -49,3 +52,11 @@ remind_handler = ConversationHandler(
 
 language_handler = CommandHandler("lang", lang.language_handler)
 weather_handler = CommandHandler("weather", weather.weather_handler)
+
+# WOLFRAM ALPHA
+quick_handler = CommandHandler('quick', wolfram_handlers.quick_question)
+equation_handler = CommandHandler('eq', wolfram_handlers.equation_solver)
+boolean_handler = CommandHandler('bool', wolfram_handlers.boolean_algebra_solver)
+plot_handler = CommandHandler('plot', wolfram_handlers.plotter)
+plot3d_handler = CommandHandler('3dplot', wolfram_handlers.plotter3d)
+wolfram_help_handler = CommandHandler('wolfram', wolfram_handlers.help)

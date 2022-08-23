@@ -1,5 +1,9 @@
+from time import time
 from telegram import Update
 from telegram.ext import ContextTypes
+from geopy import geocoders
+from tzwhere import tzwhere
+
 
 async def show_user_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = context.user_data.get('language', 'English')
@@ -51,6 +55,28 @@ async def delete_value(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     MSG = "تم حذف القيمة بنجاح" if lang == "Arabic" else "Value deleted successfully."
     await bot.send_message(chat_id=chat_id, text=f"{MSG}")
+
+
+async def location(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = context.user_data.get('language', 'English')
+    args = context.args
+    loc = " ".join(args[0:]) if args else "London"
+    context.user_data["location"] = loc
+    CONFIRM = ".تم إضافة الموقع بنجاح" if lang == "Arabic" else "Location added successfully."
+    await context.bot.send_message(chat_id=update.message.chat_id, text=f"{CONFIRM}")
+
+async def timezone(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lang = context.user_data.get('language', 'English')
+    args = context.args
+    loc = " ".join(args[0:]) if args else "London"
+    geocoder = geocoders.Nominatim(user_agent="Telegram-utility-bot")
+    context.user_data["location"] = loc
+    _, (lat, lng) = geocoder.geocode(loc)
+    timezone = tzwhere.tzwhere().tzNameAt(lat, lng)
+    context.user_data["timezone"] = timezone
+
+    CONFIRM = ".تم إضافة الموقع والمنطقة الزمنية بنجاح" if lang == "Arabic" else "Location and timezone added successfully."
+    await context.bot.send_message(chat_id=update.message.chat_id, text=f"{CONFIRM}")
 
 def dict_to_str(dictionary: dict) -> str:
     return "\n".join(f"<b>{key}</b>: {value}" for key, value in dictionary.items())

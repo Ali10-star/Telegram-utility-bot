@@ -33,6 +33,15 @@ if __name__ == '__main__':
         handlers.del_handler,
         handlers.language_handler,
         handlers.weather_handler,
+        handlers.location_handler,
+        handlers.tzone_handler,
+        # Wolfram Alpha
+        handlers.quick_handler,
+        handlers.equation_handler,
+        handlers.boolean_handler,
+        handlers.plot_handler,
+        handlers.plot3d_handler,
+        handlers.wolfram_help_handler,
     ])
 
     bot_config.run()

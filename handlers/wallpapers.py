@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
+
 # Globals
 FETCHING_WALL = ""
 NOT_FOUND = ""
@@ -37,6 +38,7 @@ async def pexels_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await bot.send_message(chat_id=chat_id, text=f'[{LINK}]({photo_link})', disable_web_page_preview=True, parse_mode='MarkdownV2')
     else:
         await bot.send_message(chat_id=chat_id, text=f'{ERROR} {status}')
+
 
 async def unsplash_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     is_search = len(context.args) != 0

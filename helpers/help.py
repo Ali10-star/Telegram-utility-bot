@@ -61,3 +61,32 @@ HELP_MESSAGE_ARABIC = """
 -------------------------------------------------
 هذا كل شيء حتى الآن!
 """
+
+WOLFRAM_HELP="""These commands use the WolframAlpha API to answer different questions and solve equations.
+
+The commands are:
+/quick <question> - ask WolframAlpha any quick question.
+
+/eq <equation> - solve an equation with step-by-step instructions.
+
+/bool <expression> - solve a boolean expression.
+
+/plot <function> - plot a one-dimensional function.
+
+/3dplot <function> - plot a two-dimensional function.
+"""
+
+WOLFRAM_HELP_ARABIC="""هذه الأوامر تستخدم الAPI الخاص بWolframAlpha.
+
+الأوامر المتوفرة:
+/quick <question> - اسأل أي سؤال عام للإجابة عليه مثلاً عاصمة بلد ما
+(البحث باللغة الإنجليزية فقط، الموقع لا يدعم اللغة العربية.)
+
+/eq <equation> - حل معادلة رياضية ما.
+
+/bool <expression> - حل تعبير بولياني أو منطقي.
+
+/plot <function> - رسم تابع لمتحول واحد.
+
+/3dplot <function> - رسم ثلاثي الأبعاد لتابع  لمتحولين.
+"""
