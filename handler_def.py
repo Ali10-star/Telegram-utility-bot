@@ -6,6 +6,7 @@ from handlers import data_store
 from handlers import lang
 from handlers import weather
 from handlers import wolfram_handlers
+from handlers import utils
 from telegram.ext import CommandHandler, MessageHandler, filters, InlineQueryHandler, ConversationHandler
 import handlers.generic_handlers as hnd
 
@@ -13,12 +14,9 @@ LANGUAGE = 0
 REMINDER_DATE = 1
 ALARM = 2
 
-# start_handler = CommandHandler('start', hnd.start)
 help_handler = CommandHandler('help', hnd.help_handler)
 
 inline_search_handler = InlineQueryHandler(inline.inline_search_query)
-
-# reminder_handler = CommandHandler('remind', rem.callback_timer)
 
 die_handler = CommandHandler('die', rands.die)
 rand_num_handler = CommandHandler('rand', rands.rand_number)
@@ -53,6 +51,9 @@ remind_handler = ConversationHandler(
 language_handler = CommandHandler("lang", lang.language_handler)
 weather_handler = CommandHandler("weather", weather.weather_handler)
 
+# Data from different APIs
+myip_handler = CommandHandler("myip", utils.ip_getter)
+
 # WOLFRAM ALPHA
 quick_handler = CommandHandler('quick', wolfram_handlers.quick_question)
 equation_handler = CommandHandler('eq', wolfram_handlers.equation_solver)
@@ -60,3 +61,7 @@ boolean_handler = CommandHandler('bool', wolfram_handlers.boolean_algebra_solver
 plot_handler = CommandHandler('plot', wolfram_handlers.plotter)
 plot3d_handler = CommandHandler('3dplot', wolfram_handlers.plotter3d)
 wolfram_help_handler = CommandHandler('wolfram', wolfram_handlers.help)
+
+# NASA
+apod_handler = CommandHandler('apod', wp.nasa_apod)
+nasa_search_handler = CommandHandler('nasa', wp.nasa_images)

@@ -17,6 +17,7 @@ if __name__ == '__main__':
     [
         handlers.start_handler,
         handlers.help_handler,
+        handlers.myip_handler,
         # reminder
         handlers.remind_handler,
         # random utils
@@ -42,6 +43,8 @@ if __name__ == '__main__':
         handlers.plot_handler,
         handlers.plot3d_handler,
         handlers.wolfram_help_handler,
+        handlers.apod_handler,
+        handlers.nasa_search_handler,
     ])
 
     bot_config.run()

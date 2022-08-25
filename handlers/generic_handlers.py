@@ -1,7 +1,9 @@
+from urllib import response
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
 from telegram.ext import ContextTypes, ConversationHandler
 from helpers.help import HELP_MESSAGE, HELP_MESSAGE_ARABIC
 from logging_config import logger
+import requests as req
 
 # Globals
 LANGUAGE = 0
@@ -44,7 +46,6 @@ async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_lang = context.user_data.get('language', 'English')
     msg = HELP_MESSAGE_ARABIC if user_lang == 'Arabic' else HELP_MESSAGE
     await context.bot.send_message(chat_id=update.effective_chat.id, text=msg, disable_web_page_preview=True)
-
 
 def get_user_name(update: Update) -> str:
     name = update.message.from_user.first_name

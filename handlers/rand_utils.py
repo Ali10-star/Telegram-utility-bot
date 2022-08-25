@@ -1,3 +1,4 @@
+from time import sleep
 from telegram import Update
 from telegram.ext import ContextTypes
 from helpers.dice import icons

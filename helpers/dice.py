@@ -1,8 +1,8 @@
 icons = [
-    'helpers/d1.jpg',
-    'helpers/d2.jpg',
-    'helpers/d3.jpg',
-    'helpers/d4.jpg',
-    'helpers/d5.jpg',
-    'helpers/d6.jpg'
+    'helpers/dice/d1.jpg',
+    'helpers/dice/d2.jpg',
+    'helpers/dice/d3.jpg',
+    'helpers/dice/d4.jpg',
+    'helpers/dice/d5.jpg',
+    'helpers/dice/d6.jpg'
 ]

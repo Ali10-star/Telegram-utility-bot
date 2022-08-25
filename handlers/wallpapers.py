@@ -1,4 +1,4 @@
-import requests as http_client
+import requests as req
 from telegram import Update
 import random as rand
 from telegram.ext import ContextTypes
@@ -64,12 +64,53 @@ async def unsplash_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await bot.send_message(chat_id=chat_id, text=f'{ERROR} {status}')
 
+async def nasa_apod(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.message.chat_id
+    is_arabic = context.user_data.get('language', 'English') == 'Arabic'
+    API_KEY = os.getenv('NASA_API_KEY')
+    URL = f"https://api.nasa.gov/planetary/apod?api_key={API_KEY}"
+    response = req.get(URL).json()
+    date = response['date']
+    explanation = response['explanation']
+    title = response['title']
+    url = response['url']
+    hd_url = response['hdurl']
+    await context.bot.send_photo(chat_id=chat_id, photo=url, caption=f"Title: {title}, Taken on: {date}")
+    await context.bot.send_message(chat_id=chat_id, text=f'<b>Explanation:</b> {explanation}', disable_web_page_preview=True, parse_mode='html')
+    MSG = 'رابط الصورة بدقة أعلى' if is_arabic else "Link to the photo in higher resolution"
+    await context.bot.send_message(chat_id=chat_id, text=f'[{MSG}]({hd_url})', disable_web_page_preview=True, parse_mode='MarkdownV2')
+
+async def nasa_images(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.message.chat_id
+    is_arabic = context.user_data.get('language', 'English') == 'Arabic'
+    query = " ".join(context.args[0:]) if context.args else "Apollo"
+    URL = f"https://images-api.nasa.gov/search?q={query}&media_type=image"
+    response = req.get(URL).json()
+    collection = response['collection']
+    items = collection['items']
+    total_items_count = len(items)
+    if not total_items_count:
+        ERROR = 'لم أعثر على نتائج تطابق بحثك.' if is_arabic else 'No images match your search query.'
+        await context.bot.send_message(chat_id=chat_id, text=ERROR, disable_web_page_preview=True)
+        return
+    index = rand.choice(list(range(0, total_items_count)))
+    data = items[index]
+    center = data['data'][0]['center']
+    date_created = data['data'][0]['date_created']
+    description = data['data'][0]['description']
+    thumbnail = data['links'][0]['href']
+    actual_image = (req.get(data['href'])).json()[0]
+    await context.bot.send_photo(chat_id=chat_id, photo=thumbnail, caption=f"<b>Description:</b> {description}\n<b>Created on:</b> {date_created}", parse_mode='html')
+    await context.bot.send_message(chat_id=chat_id, text=f'<b>Center: </b> {center}', disable_web_page_preview=True, parse_mode='html')
+    MSG = 'رابط الصورة بدقة أعلى' if is_arabic else "Link to the photo in higher resolution"
+    await context.bot.send_message(chat_id=chat_id, text=f'[{MSG}]({actual_image})', disable_web_page_preview=True, parse_mode='MarkdownV2')
+
 
 def search_pexels(search_query: str):
     URL = 'https://api.pexels.com/v1/search?query='
     API_KEY = os.getenv('PEXELS_API_KEY')
     headers = {'Authorization': API_KEY}
-    response = http_client.get(URL + search_query, headers=headers)
+    response = req.get(URL + search_query, headers=headers)
     found_photos = response.json()['photos']
     if response.status_code != 200 or not found_photos:
         return [], [], [], [], response.status_code
@@ -84,7 +125,7 @@ def fetch_random_pexels():
     URL = 'https://api.pexels.com/v1/curated'
     API_KEY = os.getenv('PEXELS_API_KEY')
     headers = {'Authorization': API_KEY}
-    response = http_client.get(URL, headers=headers)
+    response = req.get(URL, headers=headers)
     json_res = response.json()
     selected_photo = rand.choice( json_res['photos'] )
     photo_link = selected_photo['src']['original']
@@ -97,7 +138,7 @@ def fetch_random_pexels():
 def fetch_random_unsplash():
     ACCESS_KEY = os.getenv('UNSPLASH_API_KEY')
     URL = f"https://api.unsplash.com/photos/random/?client_id={ACCESS_KEY}"
-    response = http_client.get(URL)
+    response = req.get(URL)
     json_res = response.json()
     status_code = response.status_code
     photo_url = json_res["urls"]["full"]
@@ -109,7 +150,7 @@ def fetch_random_unsplash():
 def search_unsplash(search_query: str):
     ACCESS_KEY = os.getenv('UNSPLASH_API_KEY')
     URL = f"https://api.unsplash.com/search/photos?query={search_query}&client_id={ACCESS_KEY}"
-    response = http_client.get(URL)
+    response = req.get(URL)
     json_res = response.json()
     status_code = response.status_code
     num_results_found = len(json_res["results"])
