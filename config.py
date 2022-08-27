@@ -1,4 +1,4 @@
-from telegram.ext import Application, ApplicationBuilder, BaseHandler
+from telegram.ext import Application, ApplicationBuilder
 
 class BotConfig:
     def __init__(self, token: str) -> None:
@@ -7,7 +7,7 @@ class BotConfig:
     def get_application(self) -> Application:
         return self.__application
 
-    def register_handlers(self, handlers: list[BaseHandler]) -> None:
+    def register_handlers(self, handlers: list) -> None:
         for handler in handlers:
             self.__application.add_handler(handler)
 
