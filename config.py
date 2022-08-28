@@ -1,15 +1,20 @@
-from telegram.ext import Application, ApplicationBuilder
+from telegram.ext import Application, Updater
+from telegram import Bot
+from asyncio import Queue
 
 class BotConfig:
     def __init__(self, token: str) -> None:
-        self.__application = ApplicationBuilder().token(token).build()
+        # .token("TOKEN")
+        self.application = Application.builder() \
+                            .updater(Updater(bot=Bot(token), update_queue=Queue)) \
+                            .build()
 
     def get_application(self) -> Application:
-        return self.__application
+        return self.application
 
     def register_handlers(self, handlers: list) -> None:
         for handler in handlers:
-            self.__application.add_handler(handler)
+            self.application.add_handler(handler)
 
     def run(self) -> None:
-        self.__application.run_polling()
+        self.application.run_polling()
