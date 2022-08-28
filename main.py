@@ -20,6 +20,10 @@ if __name__ == '__main__':
         bot_config.run()
     else:
         updater = Updater(bot=Bot(API_KEY), update_queue=Queue())
-        WEB_HOOK = f"https://utility-telegram-bot.onrender.com"
-        run( updater.start_webhook(listen="0.0.0.0", port=5000, url_path=API_KEY, webhook_url=f"{WEB_HOOK}/{API_KEY}") )
+        try:
+            run(updater.initialize())
+            WEB_HOOK = f"https://utility-telegram-bot.onrender.com"
+            run( updater.start_webhook(listen="0.0.0.0", port=5000, url_path=API_KEY, webhook_url=f"{WEB_HOOK}/{API_KEY}") )
+        except:
+            pass
 
