@@ -65,3 +65,36 @@ wolfram_help_handler = CommandHandler('wolfram', wolfram_handlers.help)
 # NASA
 apod_handler = CommandHandler('apod', wp.nasa_apod)
 nasa_search_handler = CommandHandler('nasa', wp.nasa_images)
+
+handlers_list = [
+        start_handler,
+        help_handler,
+        myip_handler,
+        # reminder
+        remind_handler,
+        # random utils
+        die_handler,
+        rand_num_handler,
+        # wallpapers
+        pexels_handler,
+        unsplash_handler,
+        inline_search_handler,
+        # Data Store
+        store_handler,
+        put_handler,
+        get_handler,
+        del_handler,
+        language_handler,
+        weather_handler,
+        location_handler,
+        tzone_handler,
+        # Wolfram Alpha
+        quick_handler,
+        equation_handler,
+        boolean_handler,
+        plot_handler,
+        plot3d_handler,
+        wolfram_help_handler,
+        apod_handler,
+        nasa_search_handler,
+    ]
