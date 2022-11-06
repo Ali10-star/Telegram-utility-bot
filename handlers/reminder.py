@@ -1,7 +1,6 @@
 import dateparser
 import datetime
 import re
-# import pytz
 from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler, ContextTypes
 
@@ -9,6 +8,9 @@ from telegram.ext import CallbackContext, ConversationHandler, ContextTypes
 REMINDER_DATE = 1
 TEXT = ""
 IS_ARABIC = False
+
+def current_timestamp() -> float:
+    return datetime.datetime.timestamp(datetime.datetime.now())
 
 async def reminder_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global TEXT, IS_ARABIC, TIMEZONE
@@ -32,9 +34,10 @@ async def reminder_date_handler(update: Update, context: CallbackContext):
     if user_message.startswith("*"):
         duration = parse_time_string(user_message)
     else:
-        reminder_time = fix_input_date()
+        reminder_time = fix_input_date(in_time=user_message)
         duration = get_seconds(dateparser.parse(reminder_time, languages=['en', 'ar']))
-        if duration < datetime.datetime.utcnow():
+
+        if float(duration) < 0:
            err_flag = True
 
     if duration is None or err_flag:
